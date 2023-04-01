@@ -7,7 +7,6 @@ dotenv.config();
 // .env file should just be four lines for each variable like below example
 // process.env.MYSQL_HOST="localhost"
 // process.env.MYSQL_DATABAE="realestate"
-// Make sure to add .env file to .gitignore so as to not upload sensitive data
 const pool = mysql.createPool({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
