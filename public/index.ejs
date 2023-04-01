@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="styles.css">
+		<script src="js/index.js" defer></script>
+	</head>
+	<body>
+		<nav>
+			<h1>Real Estate Co.<br>Database Management System</h1>
+		</nav>
+		<h1 class="heading">Homes</h1>
+		<div class="filters">
+			<form action="/" method="post">
+				<p>Filters:</p>
+				<button id="ownerBtn" type="submit" name="btn" value="owner">owner</button>
+				<button type="submit" name="btn" value="price">price</button>
+				<button type="submit" name="btn" value="sqft">sqft</button>
+				<button type="submit" name="btn" value="house type">house type</button>
+			</form>
+		</div>
+		<div class="table">
+			<p class="title row">ID</p>
+			<p class="title row">sqft</p>
+			<p class="title row">floors</p>
+			<p class="title row">bedrooms</p>
+			<p class="title row">bathrooms</p>
+			<p class="title row">landsize</p>
+			<p class="title row">year</p>
+
+			<!-- Embedded javascript is used here -->
+			<!-- rows is the array passed from server.js in the GET and POST request -->
+			<% for (let i = 0; i < rows.length; i ++) { %>
+			<p class="row"><%= rows[i].id %></p>
+			<p class="row"><%= rows[i].sqft %></p>
+			<p class="row"><%= rows[i].floors %></p>
+			<p class="row"><%= rows[i].bedrooms %></p>
+			<p class="row"><%= rows[i].bathrooms %></p>
+			<p class="row"><%= rows[i].land_size %></p>
+			<p class="row"><%= rows[i].year %></p>
+			<% } %>
+		</div>
+	</body>
+</html>

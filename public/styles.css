@@ -1,0 +1,50 @@
+* {
+	margin: 0;
+	font-family: sans-serif;
+}
+
+nav {
+	height: 100px;
+	background-color: lightblue;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.5em;
+	text-align: center;
+}
+
+.heading {
+	text-align: center;
+	margin: 50px 0;
+}
+
+.filters {
+	width: 80%;
+	margin: auto;
+}
+
+.filters p {
+	width: 100px;
+	display: inline-block;
+}
+
+.filters button {
+	width: 100px;
+}
+
+.table {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	margin: auto;
+	width: 80%;
+	text-align: center;
+}
+
+.title {
+	background-color: lightgray;
+}
+
+.row {
+	outline: solid 1px;
+	font-size: 1.2em;
+}
