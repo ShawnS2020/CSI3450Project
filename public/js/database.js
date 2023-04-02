@@ -19,23 +19,28 @@ const pool = mysql.createPool({
 // Below are the functions for querying data
 // These functions get exported to server.js and the server sends data to the HTML webpage
 
-// select * from home
+// Selects all from home except home_id joined with owner.name and sale.price
 async function getHomes() {
-	const rows = (await pool.query("select * from home"))[0];
+	const rows = (await pool.query("select home.sqft, home.floors, home.bedrooms, home.bathrooms, home.land_size, home.year, home.type, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id;"))[0];
 	return rows;
 }
 
-// select * from home order by sqft desc
+// Inserts a new row into home with default values (all null)
+async function insert() {
+	await pool.query("insert into home values ();");
+}
+
+// Selects all from home except home_id joined with owner.name and sale.price ordered by sqft desc
 async function getHomesSqftDesc() {
-	const rows = (await pool.query("select * from home order by sqft desc"))[0];
+	const rows = (await pool.query("select home.sqft, home.floors, home.bedrooms, home.bathrooms, home.land_size, home.year, home.type, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id order by sqft desc;"))[0];
 	return rows;
 }
 
-// select * from home order by sqft asc
+// Selects all from home except home_id joined with owner.name and sale.price ordered by sqft asc
 async function getHomesSqftAsc() {
-	const rows = (await pool.query("select * from home order by sqft asc"))[0];
+	const rows = (await pool.query("select home.sqft, home.floors, home.bedrooms, home.bathrooms, home.land_size, home.year, home.type, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id order by sqft asc;"))[0];
 	return rows;
 }
 
 // Export to server.js
-export { getHomes, getHomesSqftDesc, getHomesSqftAsc };
+export { getHomes, insert, getHomesSqftDesc, getHomesSqftAsc };
