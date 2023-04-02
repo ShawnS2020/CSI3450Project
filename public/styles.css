@@ -34,7 +34,8 @@ nav {
 
 .table {
 	display: grid;
-	grid-template-columns: repeat(9, 1fr);
+	/* add-del-btn is 20px, all other columns are 1fr */
+	grid-template-columns: 20px repeat(9, 1fr);
 	margin: auto;
 	width: 80%;
 	text-align: center;

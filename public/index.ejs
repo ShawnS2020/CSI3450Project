@@ -4,7 +4,6 @@
 		<meta charset="UTF-8">
 		<title></title>
 		<link rel="stylesheet" href="styles.css">
-		<script src="js/index.js" defer></script>
 	</head>
 	<body>
 		<nav>
@@ -22,6 +21,9 @@
 			</form>
 		</div>
 		<div class="table">
+			<form action="/" method="post">
+			<button class="add-del-btn" type="submit" name="btn" value="+">+</button>
+			</form>
 			<p class="title row">type</p>
 			<p class="title row">price</p>
 			<p class="title row">sqft</p>
@@ -35,6 +37,9 @@
 			<!-- Embedded javascript is used here -->
 			<!-- rows is the array passed from server.js in the GET and POST request -->
 			<% for (let i = 0; i < rows.length; i ++) { %>
+			<form action="/" method="post">
+			<button class="add-del-btn">-</button>
+			</form>
 			<p class="row"><%= rows[i].type %></p>
 			<p class="row"><%= rows[i].price %></p>
 			<p class="row"><%= rows[i].sqft %></p>

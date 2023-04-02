@@ -5,7 +5,7 @@ import mysql from "mysql2";
 import bodyParser from "body-parser";
 // Import functions from database.js
 // These are the functions used for querying
-import { getHomes, getHomesSqftDesc, getHomesSqftAsc } from "./database.js";
+import { getHomes, insert, getHomesSqftDesc, getHomesSqftAsc } from "./database.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -18,7 +18,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // rows is an array holding the queried data. It gets assigned to the results of a SQL query depending on what action was taken on the webpage
 // It then gets passed to the html for displaying on the webpage
-let rows;
+// Here, it is assigned to getHomes(), as this is the initial data displayed on the page
+let rows = await getHomes();
 
 // filter variable is used to determine whether a filter is being applied or not
 // It starts off null, meaning it is not being applied
@@ -26,10 +27,7 @@ let rows;
 let sqftFilter = null;
 
 // Initial HTTP GET request upon page load
-// It sets rows equal to 'select * from homes' query and renders the webpage with those rows
 app.get("/", async (req, res) => {
-	// Set rows
-	rows = await getHomes();
 	// Render web page and pass rows
 	res.render(__public + "/index.ejs", { rows : rows });
 });
@@ -38,6 +36,14 @@ app.get("/", async (req, res) => {
 // req.body.btn is used to determine which filter button was clicked
 // The corresponding filter variable is used to determine whether it is ascending or descending
 app.post("/", async (req, res) => {
+	
+	// + button (inserts a home with default values)
+	if (req.body.btn == "+") {
+		await insert();
+		rows = await getHomes();
+		console.log(rows);
+	}
+
 	// sqft filter button
 	if (req.body.btn == "sqft") {
 		if (sqftFilter == null || sqftFilter == "asc") { // Filter is now applied in descending order
