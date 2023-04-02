@@ -21,7 +21,7 @@
 			</form>
 		</div>
 		<div class="table">
-			<p class="title row">ID</p>
+			<p class="title row">type</p>
 			<p class="title row">sqft</p>
 			<p class="title row">floors</p>
 			<p class="title row">bedrooms</p>
@@ -33,7 +33,7 @@
 			<!-- Embedded javascript is used here -->
 			<!-- rows is the array passed from server.js in the GET and POST request -->
 			<% for (let i = 0; i < rows.length; i ++) { %>
-			<p class="row"><%= rows[i].id %></p>
+			<p class="row"><%= rows[i].type %></p>
 			<p class="row"><%= rows[i].sqft %></p>
 			<p class="row"><%= rows[i].floors %></p>
 			<p class="row"><%= rows[i].bedrooms %></p>
