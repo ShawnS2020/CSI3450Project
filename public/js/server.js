@@ -40,16 +40,19 @@ app.get("/", async (req, res) => {
 app.post("/", async (req, res) => {
 	// sqft filter button
 	if (req.body.btn == "sqft") {
-		if (sqftFilter == null) { // Filter is now applied in descending order
+		if (sqftFilter == null || sqftFilter == "asc") { // Filter is now applied in descending order
 			sqftFilter = "desc";
 			rows = await getHomesSqftDesc();
 		} else if (sqftFilter == "desc") { // Filter is now applied in ascending order
 			sqftFilter = "asc"
 			rows = await getHomesSqftAsc();
-		} else if (sqftFilter == "asc") { // Filter is removed
-			sqftFilter = null;
-			rows = await getHomes();
 		}
+	}
+
+	// X button (removes filters)
+	if (req.body.btn == "x") {
+		sqftFilter = null;
+		rows = await getHomes();
 	}
 
 	// Page is rendered and rows gets passed to it

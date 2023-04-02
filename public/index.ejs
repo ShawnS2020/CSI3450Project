@@ -14,6 +14,7 @@
 		<div class="filters">
 			<form action="/" method="post">
 				<p>Filters:</p>
+				<button id="ownerBtn" type="submit" name="btn" value="x">X</button>
 				<button id="ownerBtn" type="submit" name="btn" value="owner">owner</button>
 				<button type="submit" name="btn" value="price">price</button>
 				<button type="submit" name="btn" value="sqft">sqft</button>
@@ -22,6 +23,7 @@
 		</div>
 		<div class="table">
 			<p class="title row">type</p>
+			<p class="title row">price</p>
 			<p class="title row">sqft</p>
 			<p class="title row">floors</p>
 			<p class="title row">bedrooms</p>
@@ -34,6 +36,7 @@
 			<!-- rows is the array passed from server.js in the GET and POST request -->
 			<% for (let i = 0; i < rows.length; i ++) { %>
 			<p class="row"><%= rows[i].type %></p>
+			<p class="row"><%= rows[i].price %></p>
 			<p class="row"><%= rows[i].sqft %></p>
 			<p class="row"><%= rows[i].floors %></p>
 			<p class="row"><%= rows[i].bedrooms %></p>
