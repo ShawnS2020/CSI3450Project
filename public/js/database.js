@@ -18,6 +18,8 @@ const pool = mysql.createPool({
 
 // Below are the functions for querying data
 // These functions get exported to server.js and the server sends data to the HTML webpage
+// NOTE: the pool.query method returns an array of TWO arrays. The first array is the query results, the second array is just metadata.
+// So make sure to grab only the 0th element of pool.query
 
 // Selects all from home except home_id joined with owner.name and sale.price
 async function getHomes() {
