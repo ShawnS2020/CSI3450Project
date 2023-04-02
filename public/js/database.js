@@ -21,19 +21,19 @@ const pool = mysql.createPool({
 
 // select * from home
 async function getHomes() {
-	const rows = (await pool.query("select * from home"))[0];
+	const rows = (await pool.query("select * from home left join owner on owner.ssn = home.owner_ssn;"))[0];
 	return rows;
 }
 
 // select * from home order by sqft desc
 async function getHomesSqftDesc() {
-	const rows = (await pool.query("select * from home order by sqft desc"))[0];
+	const rows = (await pool.query("select * from home left join owner on owner.ssn = home.owner_ssn order by sqft desc"))[0];
 	return rows;
 }
 
 // select * from home order by sqft asc
 async function getHomesSqftAsc() {
-	const rows = (await pool.query("select * from home order by sqft asc"))[0];
+	const rows = (await pool.query("select * from home left join owner on owner.ssn = home.owner_ssn order by sqft asc"))[0];
 	return rows;
 }
 

@@ -26,8 +26,9 @@
 			<p class="title row">floors</p>
 			<p class="title row">bedrooms</p>
 			<p class="title row">bathrooms</p>
-			<p class="title row">landsize</p>
+			<p class="title row">acreage</p>
 			<p class="title row">year</p>
+			<p class="title row">owner</p>
 
 			<!-- Embedded javascript is used here -->
 			<!-- rows is the array passed from server.js in the GET and POST request -->
@@ -39,6 +40,7 @@
 			<p class="row"><%= rows[i].bathrooms %></p>
 			<p class="row"><%= rows[i].land_size %></p>
 			<p class="row"><%= rows[i].year %></p>
+			<p class="row"><%= rows[i].name %></p>
 			<% } %>
 		</div>
 	</body>
