@@ -66,8 +66,8 @@ app.post("/", async (req, res) => {
 		rows = await getHomes();
 	}
 
-	// Page is rendered and rows gets passed to it
-	res.render(__public + "/index.ejs", { rows : rows });
+	// Page is reloaded with updated rows
+	res.redirect("/");
 });
 
 app.listen(3000, () => console.log("Server started on port 3000"));
