@@ -5,7 +5,7 @@ import mysql from "mysql2";
 import bodyParser from "body-parser";
 // Import functions from database.js
 // These are the functions used for querying
-import { getHomes, insert, getHomesSqftDesc, getHomesSqftAsc } from "./database.js";
+import { getHomes, insert, deleteHome, getHomesOwnerAsc, getHomesOwnerDesc, getHomesSqftAsc, getHomesSqftDesc } from "./database.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -25,6 +25,7 @@ let rows = await getHomes();
 // It starts off null, meaning it is not being applied
 // It can also be assigned "asc" or "desc" depending on whether the user wants the rows to be in ascending or descending order
 let sqftFilter = null;
+let ownerFilter = null
 
 // Initial HTTP GET request upon page load
 app.get("/", async (req, res) => {
@@ -36,33 +37,50 @@ app.get("/", async (req, res) => {
 // req.body.btn is used to determine which filter button was clicked
 // The corresponding filter variable is used to determine whether it is ascending or descending
 app.post("/", async (req, res) => {
-	
+
 	// + button (inserts a home with default values)
 	if (req.body.btn == "+") {
 		await insert();
 		rows = await getHomes();
-		console.log(rows);
+	}
+
+	// - button (deletes the corresponding home)
+	if (Number(req.body.btn) > 0) {
+		await deleteHome(req.body.btn);
+		rows = await getHomes();
+	}
+
+	// owner filter button
+	if (req.body.btn == "owner") {
+		if (ownerFilter == null || ownerFilter == "desc") { // Filter is now applied in ascending order
+			ownerFilter = "asc";
+			rows = await getHomesOwnerAsc();
+		} else if (ownerFilter == "asc") { // Filter is now applied in descending order
+			ownerFilter = "desc"
+			rows = await getHomesOwnerDesc();
+		}
 	}
 
 	// sqft filter button
 	if (req.body.btn == "sqft") {
-		if (sqftFilter == null || sqftFilter == "asc") { // Filter is now applied in descending order
-			sqftFilter = "desc";
-			rows = await getHomesSqftDesc();
-		} else if (sqftFilter == "desc") { // Filter is now applied in ascending order
-			sqftFilter = "asc"
+		if (sqftFilter == null || sqftFilter == "desc") { // Filter is now applied in ascending order
+			sqftFilter = "asc";
 			rows = await getHomesSqftAsc();
+		} else if (sqftFilter == "asc") { // Filter is now applied in descending order
+			sqftFilter = "desc"
+			rows = await getHomesSqftDesc();
 		}
 	}
 
 	// X button (removes filters)
 	if (req.body.btn == "x") {
+		ownerFilter = null;
 		sqftFilter = null;
 		rows = await getHomes();
 	}
 
-	// Page is rendered and rows gets passed to it
-	res.render(__public + "/index.ejs", { rows : rows });
+	// Page is reloaded with updated rows
+	res.redirect("/");
 });
 
 app.listen(3000, () => console.log("Server started on port 3000"));
