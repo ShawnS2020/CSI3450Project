@@ -21,7 +21,7 @@ const pool = mysql.createPool({
 // NOTE: the pool.query method returns an array of TWO arrays. The first array is the query results, the second array is just metadata.
 // So make sure to grab only the 0th element of pool.query
 
-// Selects all from home except home_id joined with owner.name and sale.price
+// Selects all from home joined with owner.name and sale.price
 async function getHomes() {
 	const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id;"))[0];
 	return rows;
@@ -41,17 +41,29 @@ async function deleteHome(id) {
 	await pool.query("set foreign_key_checks = 1;");
 }
 
-// Selects all from home except home_id joined with owner.name and sale.price ordered by sqft desc
-async function getHomesSqftDesc() {
-	const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id order by sqft desc;"))[0];
+// Selects all from home joined with owner.name and sale.price ordered by owner.name asc
+async function getHomesOwnerAsc() {
+	const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id order by owner.name asc;"))[0];
 	return rows;
 }
 
-// Selects all from home except home_id joined with owner.name and sale.price ordered by sqft asc
+// Selects all from home joined with owner.name and sale.price ordered by owner.name desc
+async function getHomesOwnerDesc() {
+	const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id order by owner.name desc;"))[0];
+	return rows;
+}
+
+// Selects all from home joined with owner.name and sale.price ordered by sqft asc
 async function getHomesSqftAsc() {
 	const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id order by sqft asc;"))[0];
 	return rows;
 }
 
+// Selects all from home joined with owner.name and sale.price ordered by sqft desc
+async function getHomesSqftDesc() {
+	const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id order by sqft desc;"))[0];
+	return rows;
+}
+
 // Export to server.js
-export { getHomes, insert, deleteHome, getHomesSqftDesc, getHomesSqftAsc };
+export { getHomes, insert, deleteHome, getHomesOwnerAsc, getHomesOwnerDesc, getHomesSqftAsc, getHomesSqftDesc };
