@@ -5,7 +5,7 @@ import mysql from "mysql2";
 import bodyParser from "body-parser";
 // Import functions from database.js
 // These are the functions used for querying
-import { getHomes, insert, getHomesSqftDesc, getHomesSqftAsc } from "./database.js";
+import { getHomes, insert, deleteHome, getHomesSqftDesc, getHomesSqftAsc } from "./database.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -36,12 +36,17 @@ app.get("/", async (req, res) => {
 // req.body.btn is used to determine which filter button was clicked
 // The corresponding filter variable is used to determine whether it is ascending or descending
 app.post("/", async (req, res) => {
-	
+
 	// + button (inserts a home with default values)
 	if (req.body.btn == "+") {
 		await insert();
 		rows = await getHomes();
-		console.log(rows);
+	}
+
+	// - button (deletes the corresponding home)
+	if (Number(req.body.btn) > 0) {
+		await deleteHome(req.body.btn);
+		rows = await getHomes();
 	}
 
 	// sqft filter button

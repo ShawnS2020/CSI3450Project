@@ -38,7 +38,7 @@
 			<!-- rows is the array passed from server.js in the GET and POST request -->
 			<% for (let i = 0; i < rows.length; i ++) { %>
 			<form action="/" method="post">
-			<button class="add-del-btn">-</button>
+			<button class="add-del-btn" name="btn" value="<%= rows[i].home_id %>">-</button>
 			</form>
 			<p class="row"><%= rows[i].type %></p>
 			<p class="row"><%= rows[i].price %></p>
