@@ -39,8 +39,8 @@ async function insert() {
 
 // Updates all rows
 async function update(id, type, sqft, floors, bedrooms, bathrooms, landSize, year, price, name) {
-	// console.log(id, type, sqft, floors, price, name);
 	for (let i = 0; i < type.length; i ++) {
+		// If any values are an empty string, assign them as null so rows arent updated with empty strings
 		if (type[i] == "") { type[i] = null; } else { type[i] = "'"+type[i]+"'"; }
 		if (sqft[i] == "") { sqft[i] = null; }
 		if (floors[i] == "") { floors[i] = null; }
