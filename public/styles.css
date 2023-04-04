@@ -35,7 +35,7 @@ nav {
 .table {
 	display: grid;
 	/* add-del-btn is 20px, all other columns are 1fr */
-	grid-template-columns: 20px repeat(9, 1fr);
+	grid-template-columns: 20px 60px repeat(9, 1fr);
 	margin: auto;
 	width: 80%;
 	text-align: center;
@@ -43,9 +43,13 @@ nav {
 
 .title {
 	background-color: lightgray;
+	outline: solid 1px;
+	font-size: 1.2em;
 }
 
-.row {
+input {
+	width: 100%;
 	outline: solid 1px;
+	text-align: center;
 	font-size: 1.2em;
 }

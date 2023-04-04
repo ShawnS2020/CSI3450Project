@@ -18,12 +18,10 @@
 				<button type="submit" name="btn" value="price">price</button>
 				<button type="submit" name="btn" value="sqft">sqft</button>
 				<button type="submit" name="btn" value="house type">house type</button>
-			</form>
 		</div>
 		<div class="table">
-			<form action="/" method="post">
-			<button class="add-del-btn" type="submit" name="btn" value="+">+</button>
-			</form>
+			<button class="add-del-btn" name="btn" value="+">+</button>
+			<button class="add-del-btn" type="submit" name="btn" value="update">update</button>
 			<p class="title row">type</p>
 			<p class="title row">price</p>
 			<p class="title row">sqft</p>
@@ -37,19 +35,20 @@
 			<!-- Embedded javascript is used here -->
 			<!-- rows is the array passed from server.js in the GET and POST request -->
 			<% for (let i = 0; i < rows.length; i ++) { %>
-			<form action="/" method="post">
 			<button class="add-del-btn" name="btn" value="<%= rows[i].home_id %>">-</button>
-			</form>
-			<p class="row"><%= rows[i].type %></p>
-			<p class="row"><%= rows[i].price %></p>
-			<p class="row"><%= rows[i].sqft %></p>
-			<p class="row"><%= rows[i].floors %></p>
-			<p class="row"><%= rows[i].bedrooms %></p>
-			<p class="row"><%= rows[i].bathrooms %></p>
-			<p class="row"><%= rows[i].land_size %></p>
-			<p class="row"><%= rows[i].year %></p>
-			<p class="row"><%= rows[i].name %></p>
+			<div></div>
+			<input type="hidden" name="id" value="<%= rows[i].home_id %>">
+			<input type="text" name="type" value="<%= rows[i].type %>">
+			<input type="text" name="price" value="<%= rows[i].price %>">
+			<input type="text" name="sqft" value="<%= rows[i].sqft %>">
+			<input type="text" name="floors" value="<%= rows[i].floors %>">
+			<input type="text" name="bedrooms" value="<%= rows[i].bedrooms %>">
+			<input type="text" name="bathrooms" value="<%= rows[i].bathrooms %>">
+			<input type="text" name="land_size" value="<%= rows[i].land_size %>">
+			<input type="text" name="year" value="<%= rows[i].year %>">
+			<input type="text" name="name" value="<%= rows[i].name %>">
 			<% } %>
+			</form>
 		</div>
 	</body>
 </html>
