@@ -5,7 +5,7 @@ import mysql from "mysql2";
 import bodyParser from "body-parser";
 // Import functions from database.js
 // These are the functions used for querying
-import { getHomes, insert, deleteHome, getHomesOwnerAsc, getHomesOwnerDesc, getHomesSqftAsc, getHomesSqftDesc } from "./database.js";
+import { getHomes, insert, update, deleteHome, getHomesOwnerAsc, getHomesOwnerDesc, getHomesSqftAsc, getHomesSqftDesc } from "./database.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -41,6 +41,12 @@ app.post("/", async (req, res) => {
 	// + button (inserts a home with default values)
 	if (req.body.btn == "+") {
 		await insert();
+		rows = await getHomes();
+	}
+
+	// update button (updates all rows)
+	if (req.body.btn == "update") {
+		await update(req.body.id, req.body.type, req.body.sqft, req.body.floors, req.body.bedrooms, req.body.bathrooms, req.body.land_size, req.body.year, req.body.price, req.body.name);
 		rows = await getHomes();
 	}
 
