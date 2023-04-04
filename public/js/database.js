@@ -28,9 +28,13 @@ async function getHomes() {
 	return rows;
 }
 
-// Inserts a new row into home with default values (all null)
+// Inserts a new home with default values (all null)
+// Insert a new sale with home_id equal to newly created home's id
 async function insert() {
 	await pool.query("insert into home values ();");
+	const rows = (await pool.query("select * from home;"))[0];
+	const id = rows[rows.length - 1].home_id;
+	await pool.query("insert into sale (home_id) values ("+id+");");
 }
 
 // Updates all rows
@@ -58,7 +62,7 @@ async function update(id, type, sqft, floors, bedrooms, bathrooms, landSize, yea
 async function deleteHome(id) {
 	await pool.query("set foreign_key_checks = 0;");
 	await pool.query("delete from home where home_id = " + id + ";");
-	await pool.query("update sale set home_id = null where home_id = " + id + ";");
+	await pool.query("delete from sale where home_id = " + id + ";");
 	await pool.query("set foreign_key_checks = 1;");
 }
 
