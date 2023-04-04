@@ -10,45 +10,72 @@
 			<h1>Real Estate Co.<br>Database Management System</h1>
 		</nav>
 		<h1 class="heading">Homes</h1>
-		<div class="filters">
-			<form action="/" method="post">
+		<form action="/" method="post">
+			<!-- Filter buttons used for ordering the rowns -->
+			<div class="filters">
 				<p>Filters:</p>
 				<button id="ownerBtn" type="submit" name="btn" value="x">X</button>
 				<button id="ownerBtn" type="submit" name="btn" value="owner">owner</button>
 				<button type="submit" name="btn" value="price">price</button>
 				<button type="submit" name="btn" value="sqft">sqft</button>
 				<button type="submit" name="btn" value="house type">house type</button>
-		</div>
-		<div class="table">
-			<button class="add-del-btn" name="btn" value="+">+</button>
-			<button class="add-del-btn" type="submit" name="btn" value="update">update</button>
-			<p class="title row">type</p>
-			<p class="title row">sqft</p>
-			<p class="title row">floors</p>
-			<p class="title row">bedrooms</p>
-			<p class="title row">bathrooms</p>
-			<p class="title row">acreage</p>
-			<p class="title row">year</p>
-			<p class="title row">price</p>
-			<p class="title row">owner</p>
+			</div>
 
-			<!-- Embedded javascript is used here -->
-			<!-- rows is the array passed from server.js in the GET and POST request -->
-			<% for (let i = 0; i < rows.length; i ++) { %>
-			<button class="add-del-btn" name="btn" value="<%= rows[i].home_id %>">-</button>
-			<div></div>
-			<input type="hidden" name="id" value="<%= rows[i].home_id %>">
-			<input type="text" name="type" value="<%= rows[i].type %>">
-			<input type="text" name="sqft" value="<%= rows[i].sqft %>">
-			<input type="text" name="floors" value="<%= rows[i].floors %>">
-			<input type="text" name="bedrooms" value="<%= rows[i].bedrooms %>">
-			<input type="text" name="bathrooms" value="<%= rows[i].bathrooms %>">
-			<input type="text" name="land_size" value="<%= rows[i].land_size %>">
-			<input type="text" name="year" value="<%= rows[i].year %>">
-			<input type="text" name="price" value="<%= rows[i].price %>">
-			<input type="text" name="name" value="<%= rows[i].name %>">
-			<% } %>
-			</form>
-		</div>
+			<!-- Titles for each row -->
+			<div class="table">
+				<!-- + button inserts a new row in home with null values -->
+				<button class="add-del-btn" name="btn" value="+">+</button>
+				<!-- Update button updates all rows with whatever is currently in the input field -->
+				<button class="add-del-btn" type="submit" name="btn" value="update">update all</button>
+				<p class="title row">type</p>
+				<p class="title row">sqft</p>
+				<p class="title row">floors</p>
+				<p class="title row">bedrooms</p>
+				<p class="title row">bathrooms</p>
+				<p class="title row">acreage</p>
+				<p class="title row">year</p>
+				<p class="title row">last price</p>
+				<p class="title row">owner</p>
+
+				<!-- Embedded javascript is used here -->
+				<!-- Input elements are used for displaying rows so the user can edit to update rows -->
+				<!-- rows is the array passed from server.js in the GET and POST request -->
+				<% for (let i = 0; i < rows.length; i ++) { %>
+				<button class="add-del-btn" name="btn" value="<%= rows[i].home_id %>">-</button>
+				<div></div>
+				<input type="hidden" name="id" value="<%= rows[i].home_id %>">
+				<input type="text" name="type" value="<%= rows[i].type %>">
+				<input type="text" name="sqft" value="<%= rows[i].sqft %>">
+				<input type="text" name="floors" value="<%= rows[i].floors %>">
+				<input type="text" name="bedrooms" value="<%= rows[i].bedrooms %>">
+				<input type="text" name="bathrooms" value="<%= rows[i].bathrooms %>">
+				<input type="text" name="land_size" value="<%= rows[i].land_size %>">
+				<input type="text" name="year" value="<%= rows[i].year %>">
+				<input type="text" name="price" value="<%= rows[i].price %>">
+				<input type="text" name="name" value="<%= rows[i].name %>">
+				<% } %>
+			</div>
+
+			<!-- The following two components are for creating new sales and owners -->
+			<div class="create-components">
+				<div class="create-wrapper sale-wrapper">
+					<h3 class="comp-heading">Create Sale</h3>
+					<div class="sale-table">
+						<p>home id</p>
+						<p>price</p>
+						<p>date listed</p>
+						<p>date sold</p>
+						<input type="text" name="home_id" value="">
+						<input type="text" name="price" value="">
+						<input type="text" name="date_listed" value="">
+						<input type="text" name="date_sold" value="">
+					</div>
+				</div>
+				<div class="create-wrapper owner-wrapper">
+					<h3 class="comp-heading">Create Owner</h3>
+					<div></div>
+				</div>
+			</div>
+		</form>
 	</body>
 </html>

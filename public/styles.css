@@ -13,6 +13,13 @@ nav {
 	text-align: center;
 }
 
+input {
+	width: 100%;
+	outline: solid 1px;
+	text-align: center;
+	font-size: 1.2em;
+}
+
 .heading {
 	text-align: center;
 	margin: 50px 0;
@@ -36,7 +43,7 @@ nav {
 	display: grid;
 	/* add-del-btn is 20px, all other columns are 1fr */
 	grid-template-columns: 20px 60px repeat(9, 1fr);
-	margin: auto;
+	margin: 0 auto 50px;
 	width: 80%;
 	text-align: center;
 }
@@ -47,9 +54,29 @@ nav {
 	font-size: 1.2em;
 }
 
-input {
-	width: 100%;
-	outline: solid 1px;
+/* Sale and Owner styles */
+
+.create-components {
+	display: flex;
+	justify-content: space-around;
 	text-align: center;
-	font-size: 1.2em;
+
+}
+
+.create-componets {
+}
+
+.create-wrapper {
+}
+
+.owner-wrapper {
+}
+
+.comp-heading {
+	background-color: lightblue;
+}
+
+.sale-table {
+	display: grid;
+	grid-template-columns: repeat(4, 100px);
 }
