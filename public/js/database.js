@@ -29,16 +29,12 @@ async function getHomes() {
 }
 
 // Inserts a new home with default values (all null)
-// Insert a new sale with home_id equal to newly created home's id
 async function insert() {
 	await pool.query("insert into home values ();");
-	const rows = (await pool.query("select * from home;"))[0];
-	const id = rows[rows.length - 1].home_id;
-	await pool.query("insert into sale (home_id) values ("+id+");");
 }
 
 // Updates all rows
-async function update(id, type, sqft, floors, bedrooms, bathrooms, landSize, year, price, name) {
+async function update(id, type, sqft, floors, bedrooms, bathrooms, landSize, year) {
 	for (let i = 0; i < type.length; i ++) {
 		// If any values are an empty string, assign them as null so rows arent updated with empty strings
 		if (type[i] == "") { type[i] = null; } else { type[i] = "'"+type[i]+"'"; }
@@ -48,12 +44,7 @@ async function update(id, type, sqft, floors, bedrooms, bathrooms, landSize, yea
 		if (bathrooms[i] == "") { bathrooms[i] = null; }
 		if (landSize[i] == "") { landSize[i] = null; }
 		if (year[i] == "") { year[i] = null; }
-		if (price[i] == "") { price[i] = null; }
-		if (name[i] == "") { name[i] = null } else { name[i] = "'"+name[i]+"'"; }
-		console.log(id[i], type[i], sqft[i], floors[i], bedrooms[i], bathrooms[i], landSize[i], year[i], price[i], name[i]);
 		await pool.query("update home set type="+type[i]+", sqft="+sqft[i]+", floors="+floors[i]+", bedrooms="+bedrooms[i]+", bathrooms="+bathrooms[i]+", land_size="+landSize[i]+", year="+year[i]+" where home_id="+id[i]+";");
-		await pool.query("update sale set price="+price[i]+" where home_id="+id[i]+";");
-		await pool.query("update owner, home set owner.name="+name[i]+" where home.home_id="+id[i]+" and home.owner_ssn = owner.ssn;");
 	}
 }
 

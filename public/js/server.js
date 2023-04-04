@@ -46,7 +46,7 @@ app.post("/", async (req, res) => {
 
 	// update button (updates all rows)
 	if (req.body.btn == "update") {
-		await update(req.body.id, req.body.type, req.body.sqft, req.body.floors, req.body.bedrooms, req.body.bathrooms, req.body.land_size, req.body.year, req.body.price, req.body.name);
+		await update(req.body.id, req.body.type, req.body.sqft, req.body.floors, req.body.bedrooms, req.body.bathrooms, req.body.land_size, req.body.year);
 		rows = await getHomes();
 	}
 
