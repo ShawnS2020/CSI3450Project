@@ -5,7 +5,7 @@ import mysql from "mysql2";
 import bodyParser from "body-parser";
 // Import functions from database.js
 // These are the functions used for querying
-import { getHomes, insert, update, deleteHome, getHomesOwnerAsc, getHomesOwnerDesc, getHomesSqftAsc, getHomesSqftDesc } from "./database.js";
+import { getHomes, getSales, insertHome, insertSale, updateHome, updateSale, deleteHome, deleteSale, getHomesOwnerAsc, getHomesOwnerDesc, getHomesSqftAsc, getHomesSqftDesc } from "./database.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -20,6 +20,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 // It then gets passed to the html for displaying on the webpage
 // Here, it is assigned to getHomes(), as this is the initial data displayed on the page
 let rows = await getHomes();
+let sales = await getSales();
 
 // filter variable is used to determine whether a filter is being applied or not
 // It starts off null, meaning it is not being applied
@@ -30,59 +31,86 @@ let ownerFilter = null
 // Initial HTTP GET request upon page load
 app.get("/", async (req, res) => {
 	// Render web page and pass rows
-	res.render(__public + "/index.ejs", { rows : rows });
+	res.render(__public + "/index.ejs", { data : { rows : rows, sales : sales } });
 });
 
 // An HTTP POST request is sent every time a button is clicked
 // req.body.btn is used to determine which filter button was clicked
 // The corresponding filter variable is used to determine whether it is ascending or descending
 app.post("/", async (req, res) => {
+	
+	const btn = JSON.parse(req.body.btn);
 
-	// + button (inserts a home with default values)
-	if (req.body.btn == "+") {
-		await insert();
-		rows = await getHomes();
-	}
+	if (btn.table == "home") {
 
-	// update button (updates all rows)
-	if (req.body.btn == "update") {
-		await update(req.body.id, req.body.type, req.body.sqft, req.body.floors, req.body.bedrooms, req.body.bathrooms, req.body.land_size, req.body.year);
-		rows = await getHomes();
-	}
-
-	// - button (deletes the corresponding home)
-	if (Number(req.body.btn) > 0) {
-		await deleteHome(req.body.btn);
-		rows = await getHomes();
-	}
-
-	// owner filter button
-	if (req.body.btn == "owner") {
-		if (ownerFilter == null || ownerFilter == "desc") { // Filter is now applied in ascending order
-			ownerFilter = "asc";
-			rows = await getHomesOwnerAsc();
-		} else if (ownerFilter == "asc") { // Filter is now applied in descending order
-			ownerFilter = "desc"
-			rows = await getHomesOwnerDesc();
+		// + button (inserts a home with default values)
+		if (btn.action == "+") {
+			await insertHome();
+			rows = await getHomes();
 		}
-	}
 
-	// sqft filter button
-	if (req.body.btn == "sqft") {
-		if (sqftFilter == null || sqftFilter == "desc") { // Filter is now applied in ascending order
-			sqftFilter = "asc";
-			rows = await getHomesSqftAsc();
-		} else if (sqftFilter == "asc") { // Filter is now applied in descending order
-			sqftFilter = "desc"
-			rows = await getHomesSqftDesc();
+		// update button (updates all rows)
+		if (btn.action == "update") {
+			await updateHome(req.body.id, req.body.type, req.body.sqft, req.body.floors, req.body.bedrooms, req.body.bathrooms, req.body.land_size, req.body.year);
+			rows = await getHomes();
 		}
-	}
 
-	// X button (removes filters)
-	if (req.body.btn == "x") {
-		ownerFilter = null;
-		sqftFilter = null;
-		rows = await getHomes();
+		// - button (deletes the corresponding home)
+		if (btn.action == "-") {
+			await deleteHome(btn.id);
+			rows = await getHomes();
+		}
+
+		// owner filter button
+		if (btn.action == "owner") {
+			if (ownerFilter == null || ownerFilter == "desc") { // Filter is now applied in ascending order
+				ownerFilter = "asc";
+				rows = await getHomesOwnerAsc();
+			} else if (ownerFilter == "asc") { // Filter is now applied in descending order
+				ownerFilter = "desc"
+				rows = await getHomesOwnerDesc();
+			}
+		}
+
+		// sqft filter button
+		if (btn.action == "sqft") {
+			if (sqftFilter == null || sqftFilter == "desc") { // Filter is now applied in ascending order
+				sqftFilter = "asc";
+				rows = await getHomesSqftAsc();
+			} else if (sqftFilter == "asc") { // Filter is now applied in descending order
+				sqftFilter = "desc"
+				rows = await getHomesSqftDesc();
+			}
+		}
+
+		// X button (removes filters)
+		if (btn.action == "x") {
+			ownerFilter = null;
+			sqftFilter = null;
+			rows = await getHomes();
+		}
+
+	} else if (btn.table == "sale") {
+		
+		if (btn.action == "+") {
+			await insertSale();
+			sales = await getSales();
+		}
+
+		if (btn.action == "update") {
+			try {
+				await updateSale(req.body.sale_id, req.body.home_id, req.body.sale_price, req.body.date_listed, req.body.date_sold);
+			} catch (error) {
+				console.log(error);
+			}
+			sales = await getSales();
+		}
+
+		if (btn.action == "-") {
+			await deleteSale(btn.id);
+			sales = await getSales();
+		}
+
 	}
 
 	// Page is reloaded with updated rows
