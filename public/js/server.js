@@ -105,6 +105,7 @@ app.post("/", async (req, res) => {
 
 	} else if (btn.table == "sale") {
 		
+		console.log(req.body);
 		if (btn.action == "+") {
 			await insertSale();
 			sales = await getSales();

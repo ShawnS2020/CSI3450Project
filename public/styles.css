@@ -81,3 +81,7 @@ input {
 	display: grid;
 	grid-template-columns: 20px 60px repeat(4, 120px);
 }
+
+select option {
+	text-align: center;
+}
