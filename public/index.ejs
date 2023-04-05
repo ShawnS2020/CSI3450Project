@@ -14,46 +14,47 @@
 			<!-- Filter buttons used for ordering the rowns -->
 			<div class="filters">
 				<p>Filters:</p>
-				<button id="ownerBtn" type="submit" name="btn" value="x">X</button>
-				<button id="ownerBtn" type="submit" name="btn" value="owner">owner</button>
-				<button type="submit" name="btn" value="price">price</button>
-				<button type="submit" name="btn" value="sqft">sqft</button>
-				<button type="submit" name="btn" value="house type">house type</button>
-				<button type="submit" name="btn" value="bathrooms">bathrooms</button>
+				<button id="ownerBtn" type="submit" name="btn" value='{"table":"home","action":"x"}'>X</button>
+				<button id="ownerBtn" type="submit" name="btn" value='{"table":"home","action":"owner"}'>owner</button>
+				<button type="submit" name="btn" value='{"table":"home","action":"price"}'>price</button>
+				<button type="submit" name="btn" value='{"table":"home","action":"sqft"}'>sqft</button>
+				<button type="submit" name="btn" value='{"table":"home","action":"house type"}'>house type</button>
+        <button type="submit" name="btn" value='{"table":"home","action":"bathrooms"}'>bathrooms</button>
 			</div>
 
 			<!-- Titles for each row -->
 			<div class="table">
 				<!-- + button inserts a new row in home with null values -->
-				<button class="add-del-btn" name="btn" value="+">+</button>
+				<button class="add-del-btn" name="btn" value='{"table":"home","action":"+"}'>+</button>
 				<!-- Update button updates all rows with whatever is currently in the input field -->
-				<button class="add-del-btn" type="submit" name="btn" value="update">update all</button>
-				<p class="title row">type</p>
-				<p class="title row">sqft</p>
-				<p class="title row">floors</p>
-				<p class="title row">bedrooms</p>
-				<p class="title row">bathrooms</p>
-				<p class="title row">acreage</p>
-				<p class="title row">year</p>
-				<p class="title row">last price</p>
-				<p class="title row">owner</p>
+				<button class="add-del-btn" type="submit" name="btn" value='{"table":"home","action":"update"}'>update all</button>
+				<p class="title">home id</p>
+				<p class="title">type</p>
+				<p class="title">sqft</p>
+				<p class="title">floors</p>
+				<p class="title">bedrooms</p>
+				<p class="title">bathrooms</p>
+				<p class="title">acreage</p>
+				<p class="title">year</p>
+				<p class="title">last price</p>
+				<p class="title">owner</p>
 
 				<!-- Embedded javascript is used here -->
 				<!-- Input elements are used for displaying rows so the user can edit to update rows -->
 				<!-- rows is the array passed from server.js in the GET and POST request -->
-				<% for (let i = 0; i < rows.length; i ++) { %>
-				<button class="add-del-btn" name="btn" value="<%= rows[i].home_id %>">-</button>
+				<% for (let i = 0; i < data.rows.length; i ++) { %>
+				<button class="add-del-btn" name="btn" value='{"table":"home","action":"-","id":"<%= data.rows[i].home_id %>"}'>-</button>
 				<div></div>
-				<input type="hidden" name="id" value="<%= rows[i].home_id %>">
-				<input type="text" name="type" value="<%= rows[i].type %>">
-				<input type="text" name="sqft" value="<%= rows[i].sqft %>">
-				<input type="text" name="floors" value="<%= rows[i].floors %>">
-				<input type="text" name="bedrooms" value="<%= rows[i].bedrooms %>">
-				<input type="text" name="bathrooms" value="<%= rows[i].bathrooms %>">
-				<input type="text" name="land_size" value="<%= rows[i].land_size %>">
-				<input type="text" name="year" value="<%= rows[i].year %>">
-				<input type="text" name="price" value="<%= rows[i].price %>">
-				<input type="text" name="name" value="<%= rows[i].name %>">
+				<input type="text" name="id" value="<%= data.rows[i].home_id %>">
+				<input type="text" name="type" value="<%= data.rows[i].type %>">
+				<input type="text" name="sqft" value="<%= data.rows[i].sqft %>">
+				<input type="text" name="floors" value="<%= data.rows[i].floors %>">
+				<input type="text" name="bedrooms" value="<%= data.rows[i].bedrooms %>">
+				<input type="text" name="bathrooms" value="<%= data.rows[i].bathrooms %>">
+				<input type="text" name="land_size" value="<%= data.rows[i].land_size %>">
+				<input type="text" name="year" value="<%= data.rows[i].year %>">
+				<input type="text" name="price" value="<%= data.rows[i].price %>">
+				<input type="text" name="name" value="<%= data.rows[i].name %>">
 				<% } %>
 			</div>
 
@@ -62,14 +63,23 @@
 				<div class="create-wrapper sale-wrapper">
 					<h3 class="comp-heading">Create Sale</h3>
 					<div class="sale-table">
-						<p class="title row">home id</p>
+						<!-- + button inserts a new row in sale with null values -->
+						<button class="add-del-btn" name="btn" value='{"table":"sale","action":"+"}'>+</button>
+						<!-- Update button updates all rows with whatever is currently in the input field -->
+						<button class="add-del-btn" type="submit" name="btn" value='{"table":"sale","action":"update"}'>update all</button>
+						<p class="title">home id</p>
 						<p>price</p>
 						<p>date listed</p>
 						<p>date sold</p>
-						<input type="text" name="home_id" value="">
-						<input type="text" name="price" value="">
-						<input type="text" name="date_listed" value="">
-						<input type="text" name="date_sold" value="">
+						<% for (let i = 0; i < data.sales.length; i ++) { %>
+						<button class="add-del-btn" name="btn" value='{"table":"sale","action":"-","id":"<%= data.sales[i].sale_id%>"}'>-</button>
+						<div></div>
+						<input type="hidden" name="sale_id" value="<%= data.sales[i].sale_id %>">
+						<input type="text" name="home_id" value="<%= data.sales[i].home_id %>">
+						<input type="text" name="sale_price" value="<%= data.sales[i].price %>">
+						<input type="text" name="date_listed" value="<%= data.sales[i].date_listed %>">
+						<input type="text" name="date_sold" value="<%= data.sales[i].date_sold %>">
+						<% } %>
 					</div>
 				</div>
 				<div class="create-wrapper owner-wrapper">
