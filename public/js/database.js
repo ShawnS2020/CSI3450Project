@@ -24,7 +24,7 @@ const pool = mysql.createPool({
 
 // Select queries for the main table on the page will always join all columns from home with owner.name and sale.price
 async function getHomes() {
-	const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id;"))[0];
+	const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id and sale.date_sold = (select max(date_sold) from sale where sale.home_id = home.home_id);"))[0];
 	return rows;
 }
 

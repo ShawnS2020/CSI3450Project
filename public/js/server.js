@@ -103,6 +103,7 @@ app.post("/", async (req, res) => {
 			} catch (error) {
 				console.log(error);
 			}
+			rows = await getHomes();
 			sales = await getSales();
 		}
 
