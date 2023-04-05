@@ -61,17 +61,17 @@ app.post("/", async (req, res) => {
 			await deleteHome(btn.id);
 			rows = await getHomes();
 		}
-    
-    // bathrooms filter button
-	  if (btn.action == "bathrooms") {
-		  if (bathroomsFilter == null || bathroomsFilter == "desc") { // Filter is now applied in ascending order
-			  bathroomsFilter = "asc";
-			  rows = await getHomesBathroomsAsc();
-		  } else if (bathroomsFilter == "asc") { // Filter is now applied in descending order
-			  bathroomsFilter = "desc"
-			  rows = await getHomesBathroomsDesc();
-      }
-		 }
+
+		// bathrooms filter button
+		if (btn.action == "bathrooms") {
+			if (bathroomsFilter == null || bathroomsFilter == "desc") { // Filter is now applied in ascending order
+				bathroomsFilter = "asc";
+				rows = await getHomesBathroomsAsc();
+			} else if (bathroomsFilter == "asc") { // Filter is now applied in descending order
+				bathroomsFilter = "desc"
+				rows = await getHomesBathroomsDesc();
+			}
+		}
 
 		// owner filter button
 		if (btn.action == "owner") {
@@ -99,7 +99,7 @@ app.post("/", async (req, res) => {
 		if (btn.action == "x") {
 			ownerFilter = null;
 			sqftFilter = null;
-      bathroomsFilter = null;
+			bathroomsFilter = null;
 			rows = await getHomes();
 		}
 
