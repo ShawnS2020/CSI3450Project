@@ -58,10 +58,10 @@
 				<% } %>
 			</div>
 
-			<!-- The following two components are for creating new sales and owners -->
+			<!-- Sale -->
 			<div class="create-components">
 				<div class="create-wrapper sale-wrapper">
-					<h3 class="comp-heading">Create Sale</h3>
+					<h3 class="comp-heading">Sales</h3>
 					<div class="sale-table">
 						<!-- + button inserts a new row in sale with null values -->
 						<button class="add-del-btn" name="btn" value='{"table":"sale","action":"+"}'>+</button>
@@ -74,8 +74,17 @@
 						<% for (let i = 0; i < data.sales.length; i ++) { %>
 						<button class="add-del-btn" name="btn" value='{"table":"sale","action":"-","id":"<%= data.sales[i].sale_id%>"}'>-</button>
 						<div></div>
+						<select name="home_id">
+							<option value="<%= data.sales[i].home_id %>"><%= data.sales[i].home_id %></option>
+							<% for (let j = 0; j < data.rows.length; j ++) { %>
+							<% if (data.rows[j].home_id != data.sales[i].home_id) { %>
+							<option value="<%= data.rows[j].home_id %>"><%= data.rows[j].home_id %></option>
+							<% } %>
+							<% } %>
+
+						</select>
 						<input type="hidden" name="sale_id" value="<%= data.sales[i].sale_id %>">
-						<input type="text" name="home_id" value="<%= data.sales[i].home_id %>">
+						<!-- <input type="text" name="home_id" value="<%= data.sales[i].home_id %>"> -->
 						<input type="text" name="sale_price" value="<%= data.sales[i].price %>">
 						<input type="text" name="date_listed" value="<%= data.sales[i].date_listed %>">
 						<input type="text" name="date_sold" value="<%= data.sales[i].date_sold %>">
