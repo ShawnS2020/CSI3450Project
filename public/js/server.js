@@ -5,7 +5,7 @@ import mysql from "mysql2";
 import bodyParser from "body-parser";
 // Import functions from database.js
 // These are the functions used for querying
-import { getHomes, getSales, insertHome, insertSale, updateHome, updateSale, deleteHome, deleteSale, getHomesOwnerAsc, getHomesOwnerDesc, getHomesSqftAsc, getHomesSqftDesc } from "./database.js";
+import { getHomes, getSales, insertHome, insertSale, updateHome, updateSale, deleteHome, deleteSale,getHomesBathroomsAsc, getHomesBathroomsDesc, getHomesOwnerAsc, getHomesOwnerDesc, getHomesSqftAsc, getHomesSqftDesc } from "./database.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -26,7 +26,8 @@ let sales = await getSales();
 // It starts off null, meaning it is not being applied
 // It can also be assigned "asc" or "desc" depending on whether the user wants the rows to be in ascending or descending order
 let sqftFilter = null;
-let ownerFilter = null
+let ownerFilter = null;
+let bathroomsFilter = null;
 
 // Initial HTTP GET request upon page load
 app.get("/", async (req, res) => {
@@ -60,6 +61,17 @@ app.post("/", async (req, res) => {
 			await deleteHome(btn.id);
 			rows = await getHomes();
 		}
+    
+    // bathrooms filter button
+	  if (btn.action == "bathrooms") {
+		  if (bathroomsFilter == null || bathroomsFilter == "desc") { // Filter is now applied in ascending order
+			  bathroomsFilter = "asc";
+			  rows = await getHomesBathroomsAsc();
+		  } else if (bathroomsFilter == "asc") { // Filter is now applied in descending order
+			  bathroomsFilter = "desc"
+			  rows = await getHomesBathroomsDesc();
+      }
+		 }
 
 		// owner filter button
 		if (btn.action == "owner") {
@@ -87,6 +99,7 @@ app.post("/", async (req, res) => {
 		if (btn.action == "x") {
 			ownerFilter = null;
 			sqftFilter = null;
+      bathroomsFilter = null;
 			rows = await getHomes();
 		}
 
