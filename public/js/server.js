@@ -5,7 +5,7 @@ import mysql from "mysql2";
 import bodyParser from "body-parser";
 // Import functions from database.js
 // These are the functions used for querying
-import { getHomes, getSales, insertHome, insertSale, updateHome, updateSale, deleteHome, deleteSale,getHomesBathroomsAsc, getHomesBathroomsDesc, getHomesOwnerAsc, getHomesOwnerDesc, getHomesSqftAsc, getHomesSqftDesc } from "./database.js";
+import { getHomes, getSales, getOwners, insertHome, insertSale, updateHome, updateSale, deleteHome, deleteSale,getHomesBathroomsAsc, getHomesBathroomsDesc, getHomesOwnerAsc, getHomesOwnerDesc, getHomesSqftAsc, getHomesSqftDesc } from "./database.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -21,6 +21,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 // Here, it is assigned to getHomes(), as this is the initial data displayed on the page
 let rows = await getHomes();
 let sales = await getSales();
+let owners = await getOwners();
 
 // filter variable is used to determine whether a filter is being applied or not
 // It starts off null, meaning it is not being applied
@@ -32,7 +33,7 @@ let bathroomsFilter = null;
 // Initial HTTP GET request upon page load
 app.get("/", async (req, res) => {
 	// Render web page and pass rows
-	res.render(__public + "/index.ejs", { data : { rows : rows, sales : sales } });
+	res.render(__public + "/index.ejs", { data : { rows:rows, sales:sales, owners:owners } });
 });
 
 // An HTTP POST request is sent every time a button is clicked

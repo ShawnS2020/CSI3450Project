@@ -33,6 +33,11 @@ async function getSales() {
 	return sales;
 }
 
+async function getOwners() {
+	const owners = (await pool.query("select * from owner;"))[0];
+	return owners;
+}
+
 // Insert functions
 // Inserts a new row with default values (all null)
 async function insertHome() {
@@ -120,4 +125,4 @@ async function getHomesBathroomsDesc() {
 
 
 // Export to server.js
-export { getHomes, getSales, insertHome, insertSale, updateHome, updateSale, deleteHome, deleteSale, getHomesBathroomsAsc, getHomesBathroomsDesc, getHomesOwnerAsc, getHomesOwnerDesc, getHomesSqftAsc, getHomesSqftDesc };
+export { getHomes, getSales, getOwners, insertHome, insertSale, updateHome, updateSale, deleteHome, deleteSale, getHomesBathroomsAsc, getHomesBathroomsDesc, getHomesOwnerAsc, getHomesOwnerDesc, getHomesSqftAsc, getHomesSqftDesc };
