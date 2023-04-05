@@ -80,6 +80,17 @@ async function getHomesSqftDesc() {
 	const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id order by sqft desc;"))[0];
 	return rows;
 }
+// Selects and orders rows by bathroom ascending
+async function getHomesBathroomsAsc() {
+    const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id order by bathrooms asc;"))[0];
+    return rows;
+}
+// Selects and orders rows by bathroom descending
+async function getHomesBathroomsDesc() {
+    const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id order by bathrooms desc;"))[0];
+    return rows;
+}
+
 
 // Export to server.js
-export { getHomes, insert, update, deleteHome, getHomesOwnerAsc, getHomesOwnerDesc, getHomesSqftAsc, getHomesSqftDesc };
+export { getHomes, insert, update, deleteHome, getHomesOwnerAsc, getHomesOwnerDesc, getHomesSqftAsc, getHomesSqftDesc, getHomesBathroomsAsc, getHomesBathroomsDesc };
