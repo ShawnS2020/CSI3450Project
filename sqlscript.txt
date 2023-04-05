@@ -2,6 +2,6 @@ create database test;
 use test;
 create table location(state char(2), county varchar(255), zip_code int, street varchar(255), house_number int, unit_number varchar(3), city varchar(255), home_id int, primary key (unit_number, house_number, street, city, state));
 create table home(home_id int, sqft int, floors int, bedrooms int, bathrooms int, land_size int, year year, type varchar(255), owner_ssn char(9), primary key (home_id));
-create table sale(sale_id int, price int, date_listed date, date_sold date, home_id int, primary key (sale_id));
+create table sale(sale_id int, price int, date_listed date, date_sold date, home_id int, primary key (sale_id), foreign key (home_id) references home (home_id));
 create table owner(ssn char(9), name varchar(255), dependents int, income int, age int, profession varchar(255), primary key (ssn));
-create table sale(sale_id int, price int, date_listed date, date_sold date, home_id int, primary key (sale_id));
+alter table home add foreign key (owner_ssn) references owner (ssn);
