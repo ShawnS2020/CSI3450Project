@@ -42,7 +42,7 @@ input {
 
 .table {
 	display: grid;
-	/* add-del-btn is 20px, all other columns are 1fr */
+	/* add-del-btn is 20px, update btn is 60px, all other columns are 1fr */
 	grid-template-columns: 20px 60px repeat(10, 1fr);
 	margin: 0 auto 50px;
 	width: 80%;
