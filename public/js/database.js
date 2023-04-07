@@ -48,6 +48,10 @@ async function insertSale() {
 	await pool.query("insert into sale values ();");
 }
 
+async function insertOwner() {
+	await pool.query("insert into owner (ssn) values ('');");
+}
+
 // Update functions update all rows in that table
 async function updateHome(id, type, sqft, floors, bedrooms, bathrooms, landSize, year) {
 	for (let i = 0; i < id.length; i ++) {
@@ -76,6 +80,20 @@ async function updateSale(saleId, homeId, price, dateListed, dateSold) {
 	}
 }
 
+async function updateOwner(oldssn, newssn, name, dependents, income, age, profession) {
+	for (let i = 0; i < oldssn.length; i ++) {
+		// If any values are an empty string, assign them as null so rows aren't updated with empty strings
+		// Besides ssn. ssn is the primary key, so it should be left as an empty string
+		if (name[i] == "") { name[i] = null; } else { name[i] = "'"+name[i]+"'"; }
+		if (dependents[i] == "") { dependents[i] = null; }
+		if (age[i] == "") { age[i] = null; }
+		if (profession[i] == "") { profession[i] = null; } else { profession[i] = "'"+profession[i]+"'"; }
+
+		await pool.query("set foreign_key_checks = 0;");
+		await pool.query("update owner set ssn='"+newssn[i]+"', name="+name[i]+", dependents="+dependents[i]+", income="+income[i]+", age="+age[i]+", profession="+profession[i]+" where ssn='"+oldssn[i]+"';");
+		await pool.query("set foreign_key_checks = 1;");
+	}
+}
 // Deletes a row
 // Also sets home_id = null on any child sales
 async function deleteHome(id) {
@@ -87,6 +105,13 @@ async function deleteHome(id) {
 
 async function deleteSale(id) {
 	await pool.query("delete from sale where sale_id = " + id + ";");
+}
+
+async function deleteOwner(ssn) {
+	await pool.query("set foreign_key_checks = 0;");
+	await pool.query("update home set owner_ssn = null where owner_ssn = '" + ssn + "';");
+	await pool.query("delete from owner where ssn = '" + ssn + "';");
+	await pool.query("set foreign_key_checks = 1;");
 }
 
 // Selects and orders rows by owner.name ascending
@@ -125,4 +150,4 @@ async function getHomesBathroomsDesc() {
 
 
 // Export to server.js
-export { getHomes, getSales, getOwners, insertHome, insertSale, updateHome, updateSale, deleteHome, deleteSale, getHomesBathroomsAsc, getHomesBathroomsDesc, getHomesOwnerAsc, getHomesOwnerDesc, getHomesSqftAsc, getHomesSqftDesc };
+export { getHomes, getSales, getOwners, insertHome, insertSale, insertOwner, updateHome, updateSale, updateOwner, deleteHome, deleteSale, deleteOwner, getHomesBathroomsAsc, getHomesBathroomsDesc, getHomesOwnerAsc, getHomesOwnerDesc, getHomesSqftAsc, getHomesSqftDesc };

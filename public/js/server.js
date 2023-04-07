@@ -5,7 +5,7 @@ import mysql from "mysql2";
 import bodyParser from "body-parser";
 // Import functions from database.js
 // These are the functions used for querying
-import { getHomes, getSales, getOwners, insertHome, insertSale, updateHome, updateSale, deleteHome, deleteSale,getHomesBathroomsAsc, getHomesBathroomsDesc, getHomesOwnerAsc, getHomesOwnerDesc, getHomesSqftAsc, getHomesSqftDesc } from "./database.js";
+import { getHomes, getSales, getOwners, insertHome, insertSale, insertOwner, updateHome, updateSale, updateOwner, deleteHome, deleteSale, deleteOwner, getHomesBathroomsAsc, getHomesBathroomsDesc, getHomesOwnerAsc, getHomesOwnerDesc, getHomesSqftAsc, getHomesSqftDesc } from "./database.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -34,6 +34,12 @@ let bathroomsFilter = null;
 app.get("/", async (req, res) => {
 	// Render web page and pass rows
 	res.render(__public + "/index.ejs", { data : { rows:rows, sales:sales, owners:owners } });
+});
+
+app.get("/owner", async (req, res) => {
+	// let owners = await getOwners();
+	// Render web page and pass rows
+	res.render(__public + "/owner.ejs", { owners : owners });
 });
 
 // An HTTP POST request is sent every time a button is clicked
@@ -127,10 +133,40 @@ app.post("/", async (req, res) => {
 			sales = await getSales();
 		}
 
-	}
+	} 
 
 	// Page is reloaded with updated rows
 	res.redirect("/");
+});
+
+app.post("/owner", async (req, res) => {
+
+	const btn = JSON.parse(req.body.btn);
+
+	if (btn.action == "+") {
+		await insertOwner();
+		owners = await getOwners();
+	}
+
+	if (btn.action == "-") {
+		console.log(btn.id);
+		await deleteOwner(btn.id);
+		owners = await getOwners();
+	}
+
+	if (btn.action == "update") {
+		console.log(req.body);
+		try {
+			await updateOwner(req.body.oldssn, req.body.newssn, req.body.name, req.body.dependents, req.body.income, req.body.age, req.body.profession);
+		} catch (error) {
+			console.log(error);
+		}
+		rows = await getHomes();
+		sales = await getSales();
+		owners = await getOwners();
+	}
+
+	res.redirect("/owner");
 });
 
 app.listen(3000, () => console.log("Server started on port 3000"));
