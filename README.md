@@ -23,5 +23,6 @@ There is a folder called demo containing some images displaying the INSERT and U
 database.js contains the method from the driver that connects to the MySQL database.
 It also contains functions for all the queries used.
 These queries are exported to server.js where they are called depending on which buttons are pressed.
+server.js is also responsible for loading and redirecting webpages.
 body-parser is a middleware technology that allows the developer to access incoming request bodies from the web page.
 This is how we check which button is pressed in the app.post method in server.js
