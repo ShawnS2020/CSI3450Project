@@ -3,10 +3,12 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Pool connects to the MySQL database using environment variables
-// You should create a .env file in the same folder as this file to assign each environment variable
-// .env file should just be four lines for each variable like below example
+// You should create a file named .env in the root directory of the project where you will assign these  environment variables
+// .env file should just be four lines for each variable like below example, replacing the strings with your own MySQL database log in data
 // process.env.MYSQL_HOST="localhost"
-// process.env.MYSQL_DATABAE="realestate"
+// process.env.MYSQL_USER="root"
+// process.env.PASSWORD="1234"
+// process.env.MYSQL_DATABASE="realestate"
 const pool = mysql.createPool({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
@@ -53,7 +55,7 @@ async function insertOwner() {
 }
 
 // Update functions update all rows in that table
-async function updateHome(id, type, sqft, floors, bedrooms, bathrooms, landSize, year) {
+async function updateHome(id, type, sqft, floors, bedrooms, bathrooms, landSize, year, ssn) {
 	for (let i = 0; i < id.length; i ++) {
 		// If any values are an empty string, assign them as null so rows aren't updated with empty strings
 		if (type[i] == "") { type[i] = null; } else { type[i] = "'"+type[i]+"'"; }
@@ -63,8 +65,9 @@ async function updateHome(id, type, sqft, floors, bedrooms, bathrooms, landSize,
 		if (bathrooms[i] == "") { bathrooms[i] = null; }
 		if (landSize[i] == "") { landSize[i] = null; }
 		if (year[i] == "") { year[i] = null; }
+		if (ssn[i] == "") { ssn[i] = null; } else { ssn[i] = "'"+ssn[i]+"'"; }
 
-		await pool.query("update home set type="+type[i]+", sqft="+sqft[i]+", floors="+floors[i]+", bedrooms="+bedrooms[i]+", bathrooms="+bathrooms[i]+", land_size="+landSize[i]+", year="+year[i]+" where home_id="+id[i]+";");
+		await pool.query("update home set type="+type[i]+", sqft="+sqft[i]+", floors="+floors[i]+", bedrooms="+bedrooms[i]+", bathrooms="+bathrooms[i]+", land_size="+landSize[i]+", year="+year[i]+", owner_ssn="+ssn[i]+" where home_id="+id[i]+";");
 	}
 }
 
@@ -116,36 +119,36 @@ async function deleteOwner(ssn) {
 
 // Selects and orders rows by owner.name ascending
 async function getHomesOwnerAsc() {
-	const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id order by owner.name asc;"))[0];
+	const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id and sale.date_sold = (select max(date_sold) from sale where sale.home_id = home.home_id) order by owner.name asc;"))[0];
 	return rows;
 }
 
 // Selects and orders rows by owner.name descending
 async function getHomesOwnerDesc() {
-	const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id order by owner.name desc;"))[0];
+	const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id and sale.date_sold = (select max(date_sold) from sale where sale.home_id = home.home_id) order by owner.name desc;"))[0];
 	return rows;
 }
 
 // Selects and orders rows by home.sqft ascending
 async function getHomesSqftAsc() {
-	const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id order by sqft asc;"))[0];
+	const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id and sale.date_sold = (select max(date_sold) from sale where sale.home_id = home.home_id) order by sqft asc;"))[0];
 	return rows;
 }
 
 // Selects and orders rows by home.sqft descending
 async function getHomesSqftDesc() {
-	const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id order by sqft desc;"))[0];
+	const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id and sale.date_sold = (select max(date_sold) from sale where sale.home_id = home.home_id) order by sqft desc;"))[0];
 	return rows;
 }
 // Selects and orders rows by bathroom ascending
 async function getHomesBathroomsAsc() {
-    const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id order by bathrooms asc;"))[0];
-    return rows;
+	const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id and sale.date_sold = (select max(date_sold) from sale where sale.home_id = home.home_id) order by bathrooms asc;"))[0];
+	return rows;
 }
 // Selects and orders rows by bathroom descending
 async function getHomesBathroomsDesc() {
-    const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id order by bathrooms desc;"))[0];
-    return rows;
+	const rows = (await pool.query("select home.*, owner.name, sale.price from home left join owner on home.owner_ssn = owner.ssn left join sale on sale.home_id = home.home_id and sale.date_sold = (select max(date_sold) from sale where sale.home_id = home.home_id) order by bathrooms desc;"))[0];
+	return rows;
 }
 
 

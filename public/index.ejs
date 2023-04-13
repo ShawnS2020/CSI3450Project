@@ -9,7 +9,7 @@
 		<nav>
 			<h1>Real Estate Co.<br>Database Management System</h1>
 		</nav>
-		<div class="link"><a href="/owner">Owner</a></div>
+		<div class="link"><a href="/owner">Owners</a></div>
 
 
 
@@ -61,13 +61,13 @@
 				<input type="text" name="bathrooms" value="<%= data.rows[i].bathrooms %>">
 				<input type="text" name="land_size" value="<%= data.rows[i].land_size %>">
 				<input type="text" name="year" value="<%= data.rows[i].year %>">
-				<input type="text" name="price" value="<%= data.rows[i].price %>">
+				<input type="text" name="price" value="<%= data.rows[i].price %>" readonly>
 				<!-- <input type="text" name="name" value="//<%= data.rows[i].name %>"> -->
-				<select name="ownerselect">
-					<option value="<%= data.rows[i].name %>"><%= data.rows[i].name %></option>
+				<select name="ssn">
+					<option value="<%= data.rows[i].owner_ssn %>"><%= data.rows[i].name %></option>
 					<% for (let j = 0; j < data.owners.length; j ++) { %>
 					<% if (data.owners[j].name != data.rows[i].name) { %>
-					<option value="<%= data.owners[j].name %>"><%= data.owners[j].name %></option>
+					<option value="<%= data.owners[j].ssn %>"><%= data.owners[j].name %></option>
 					<% } %>
 					<% } %>
 				</select>
