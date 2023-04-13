@@ -9,6 +9,14 @@
 		<nav>
 			<h1>Real Estate Co.<br>Database Management System</h1>
 		</nav>
+		<div class="link"><a href="/owner">Owners</a></div>
+
+
+
+		<!-- Home -->
+
+
+
 		<h1 class="heading">Homes</h1>
 		<form action="/" method="post">
 			<!-- Filter buttons used for ordering the rowns -->
@@ -53,12 +61,25 @@
 				<input type="text" name="bathrooms" value="<%= data.rows[i].bathrooms %>">
 				<input type="text" name="land_size" value="<%= data.rows[i].land_size %>">
 				<input type="text" name="year" value="<%= data.rows[i].year %>">
-				<input type="text" name="price" value="<%= data.rows[i].price %>">
-				<input type="text" name="name" value="<%= data.rows[i].name %>">
+				<input type="text" name="price" value="<%= data.rows[i].price %>" readonly>
+				<!-- <input type="text" name="name" value="//<%= data.rows[i].name %>"> -->
+				<select name="ssn">
+					<option value="<%= data.rows[i].owner_ssn %>"><%= data.rows[i].name %></option>
+					<% for (let j = 0; j < data.owners.length; j ++) { %>
+					<% if (data.owners[j].name != data.rows[i].name) { %>
+					<option value="<%= data.owners[j].ssn %>"><%= data.owners[j].name %></option>
+					<% } %>
+					<% } %>
+				</select>
 				<% } %>
 			</div>
 
+
+
 			<!-- Sale -->
+
+
+
 			<div class="create-components">
 				<div class="create-wrapper sale-wrapper">
 					<h3 class="comp-heading">Sales</h3>
@@ -84,17 +105,16 @@
 
 						</select>
 						<input type="hidden" name="sale_id" value="<%= data.sales[i].sale_id %>">
-						<!-- <input type="text" name="home_id" value="<%= data.sales[i].home_id %>"> -->
 						<input type="text" name="sale_price" value="<%= data.sales[i].price %>">
 						<input type="text" name="date_listed" value="<%= data.sales[i].date_listed %>">
 						<input type="text" name="date_sold" value="<%= data.sales[i].date_sold %>">
 						<% } %>
 					</div>
 				</div>
-				<div class="create-wrapper owner-wrapper">
+				<!-- <div class="create-wrapper owner-wrapper">
 					<h3 class="comp-heading">Create Owner</h3>
 					<div></div>
-				</div>
+				</div> -->
 			</div>
 		</form>
 	</body>

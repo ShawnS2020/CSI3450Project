@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="styles.css">
+	</head>
+	<body>
+		<nav>
+			<h1>Real Estate Co.<br>Database Management System</h1>
+		</nav>
+		<div class="link"><a href="/">Home</a></div>
+		<h1 class="heading">Home Owners</h1>
+		
+		<form action="/owner" method="post">
+			<!-- Titles for each row -->
+			<div class="owner-table">
+				<!-- + button inserts a new row in home with null values -->
+				<button class="add-del-btn" name="btn" value='{"table":"owner","action":"+"}'>+</button>
+				<!-- Update button updates all rows with whatever is currently in the input field -->
+				<button class="add-del-btn" type="submit" name="btn" value='{"table":"owner","action":"update"}'>update all</button>
+				<p class="title">ssn</p>
+				<p class="title">name</p>
+				<p class="title">dependents</p>
+				<p class="title">income</p>
+				<p class="title">age</p>
+				<p class="title">profession</p>
+
+				<!-- Embedded javascript is used here -->
+				<!-- Input elements are used for displaying rows so the user can edit to update rows -->
+				<!-- rows is the array passed from server.js in the GET and POST request -->
+				<% for (let i = 0; i < owners.length; i ++) { %>
+				<button class="add-del-btn" name="btn" value='{"table":"owner","action":"-","id":"<%= owners[i].ssn %>"}'>-</button>
+				<div></div>
+				<input type="hidden" name="oldssn" value="<%= owners[i].ssn %>">
+				<input type="text" name="newssn" value="<%= owners[i].ssn %>">
+				<input type="text" name="name" value="<%= owners[i].name %>">
+				<input type="text" name="dependents" value="<%= owners[i].dependents %>">
+				<input type="text" name="income" value="<%= owners[i].income %>">
+				<input type="text" name="age" value="<%= owners[i].age%>">
+				<input type="text" name="profession" value="<%= owners[i].profession %>">
+				<% } %>
+			</div>
+		</form>
+	</body>
+</html>
