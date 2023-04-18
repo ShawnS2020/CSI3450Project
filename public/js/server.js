@@ -155,7 +155,6 @@ app.post("/owner", async (req, res) => {
 	}
 
 	if (btn.action == "update") {
-		console.log(req.body);
 		try {
 			await updateOwner(req.body.oldssn, req.body.newssn, req.body.name, req.body.dependents, req.body.income, req.body.age, req.body.profession);
 		} catch (error) {
